@@ -1,0 +1,98 @@
+<h2>Quản lý nhân viên</h2>
+
+<div class="form-container">
+
+  <input
+    type="text"
+    placeholder="Họ tên"
+    [(ngModel)]="NewUser.hoTen">
+
+  <input
+    type="email"
+    placeholder="Email"
+    [(ngModel)]="NewUser.email">
+
+  <input
+    type="text"
+    placeholder="Điện thoại"
+    [(ngModel)]="NewUser.dienThoai">
+
+  <input
+    type="password"
+    placeholder="Mật khẩu"
+    [(ngModel)]="NewUser.matKhau">
+
+  <select [(ngModel)]="NewUser.maVaiTro">
+    <option [value]="2">Phục vụ</option>
+    <option [value]="3">Bếp</option>
+    <option [value]="4">Thu ngân</option>
+  </select>
+
+  <button (click)="AddEmployee()">
+    Thêm nhân viên
+  </button>
+
+</div>
+
+<hr>
+
+<table>
+
+  <thead>
+    <tr>
+      <th>Họ tên</th>
+      <th>Email</th>
+      <th>Điện thoại</th>
+      <th>Vai trò</th>
+      <th>Trạng thái</th>
+      <th>Thao tác</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr *ngFor="let user of Users">
+
+      <td>{{ user.hoTen }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.dienThoai }}</td>
+
+      <td>
+
+        <select
+          [(ngModel)]="user.maVaiTro"
+          (change)="ChangeRole(user)">
+
+          <option [value]="2">Phục vụ</option>
+          <option [value]="3">Bếp</option>
+          <option [value]="4">Thu ngân</option>
+
+        </select>
+
+      </td>
+
+      <td>
+
+        {{ user.trangThaiHoatDong
+          ? 'Hoạt động'
+          : 'Đã khóa' }}
+
+      </td>
+
+      <td>
+        <span
+          [class.status-active]="user.trangThaiHoatDong"
+          [class.status-lock]="!user.trangThaiHoatDong">
+
+          {{ user.trangThaiHoatDong
+            ? 'Hoạt động'
+            : 'Đã khóa' }}
+
+        </span>
+      </td>
+
+    </tr>
+
+  </tbody>
+
+</table>
