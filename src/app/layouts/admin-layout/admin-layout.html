@@ -1,0 +1,105 @@
+<div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                ☁
+            </div>
+
+            <span>FQCloud</span>
+
+        </div>
+
+        <nav>
+
+            <a
+                routerLink="/admin/user-management"
+                routerLinkActive="active">
+
+                👥 Quản lý nhân viên
+
+            </a>
+
+            <a>
+
+                🍽 Quản lý bàn
+
+            </a>
+
+            <a>
+
+                🍜 Quản lý món ăn
+
+            </a>
+
+            <a>
+
+                📈 Doanh thu
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- Nội dung -->
+    <main class="content">
+
+        <div class="topbar">
+
+            <div>
+
+                <small>NHÂN SỰ F-CLOUD</small>
+
+                <h1>Danh sách nhân viên</h1>
+
+                <p>Tối ưu hóa quy trình quản lý nhân viên</p>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <button class="notify-btn">
+                    🔔
+                </button>
+
+                <button
+                    class="add-btn"
+                    routerLink="/admin/create-employee">
+
+                    👥 + Thêm nhân viên
+
+                </button>
+
+                <div class="admin-info">
+
+                    <div class="avatar">
+                        {{ Avatar }}
+                    </div>
+
+                    <div>
+
+                        <strong>{{ FullName }}</strong>
+
+                        <div class="role">
+                            {{ Role }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <router-outlet></router-outlet>
+
+    </main>
+
+</div>

@@ -1,0 +1,42 @@
+<div class="card">
+
+  <h2>Thêm nhân viên</h2>
+
+  <input
+    placeholder="Họ tên"
+    [(ngModel)]="NewUser.hoTen">
+
+  <input
+    placeholder="Email"
+    [(ngModel)]="NewUser.email">
+
+  <input
+    placeholder="Điện thoại"
+    [(ngModel)]="NewUser.dienThoai">
+
+  <input
+    type="password"
+    placeholder="Mật khẩu"
+    [(ngModel)]="NewUser.matKhau">
+
+  <select [(ngModel)]="NewUser.maVaiTro">
+
+    <option [value]="2">
+      Phục vụ
+    </option>
+
+    <option [value]="3">
+      Bếp
+    </option>
+
+    <option [value]="4">
+      Thu ngân
+    </option>
+
+  </select>
+
+  <button (click)="AddEmployee()">
+    Lưu
+  </button>
+
+</div>

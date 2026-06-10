@@ -37,42 +37,72 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.loginForm.invalid) return;
+
+    if (this.loginForm.invalid) {
+      return;
+    }
 
     this.isLoading = true;
     this.errorMessage = '';
 
-    // Ép kiểu chuẩn xác 100% sang đối tượng LoginRequest của Backend .NET
-    const loginPayload = {
-      Identifer: this.loginForm.value.identifer,
-      MatKhau: this.loginForm.value.matKhau
-    };
+    this.authService.login(
+      this.loginForm.value.identifer,
+      this.loginForm.value.matKhau
+    )
+    .pipe(
+      finalize(() => {
+        this.isLoading = false;
+      })
+    )
+    .subscribe({
 
-    // Truyền loginPayload vào hàm đăng nhập của AuthService
-    this.authService.login(loginPayload.Identifer, loginPayload.MatKhau)
-      .pipe(
-        finalize(() => {
-          this.isLoading = false; // Luôn luôn tắt loading dứt điểm
-        })
-      )
-      .subscribe({
-        next: (res: AuthResponse) => {
-          console.log('Response từ API:', res);
+      next: (res: AuthResponse) => {
 
-          if (res.isSuccess) {
-            alert('Đăng nhập thành công');
+        console.log('Response API:', res);
+        console.log('Role API:', res.role);
 
-            if (res.role === 'Admin') {
-              this.router.navigate(['/admin']);
-            } else if (res.role === 'Nhà bếp' || res.role === 'Phục vụ') {
-              this.router.navigate(['/staff']);
-            } else {
-              this.router.navigate(['/customer']);
-            }
-          } else {
-            this.errorMessage = res.message;
-          }
+        if (!res.isSuccess) {
+          this.errorMessage = res.message;
+          return;
         }
-      });
+
+        alert('Đăng nhập thành công');
+
+        if (
+          res.role === 'Admin' ||
+          res.role === 'Quản lý'
+        ) {
+
+          this.router.navigateByUrl('/admin/user-management');
+
+        }
+        else if (
+          res.role === 'Nhà bếp' ||
+          res.role === 'Phục vụ'
+        ) {
+
+          this.router.navigateByUrl('/staff');
+
+        }
+        else {
+
+          this.router.navigateByUrl('/customer');
+
+        }
+
+      },
+
+      error: (err) => {
+
+        console.log('LOGIN ERROR:', err);
+
+        this.errorMessage =
+          err?.error?.message ||
+          'Không kết nối được máy chủ';
+
+      }
+
+    });
+
   }
 }
