@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-admin-layout',
@@ -9,11 +9,16 @@ import { RouterModule } from '@angular/router';
   styleUrl: './admin-layout.css',
 })
 export class AdminLayout implements OnInit {
+
   FullName = 'Admin';
 
   Role = 'Quản lý';
 
   Avatar = 'A';
+
+  constructor(
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
 
@@ -38,5 +43,28 @@ export class AdminLayout implements OnInit {
 
     }
 
+    if (
+      this.router.url === '/admin'
+    ) {
+
+      this.router.navigate(
+        ['/admin/user-management']
+      );
+
+    }
+
   }
+
+  logout(): void {
+
+    localStorage.removeItem(
+      'currentUser'
+    );
+
+    this.router.navigate(
+      ['/login']
+    );
+
+  }
+
 }

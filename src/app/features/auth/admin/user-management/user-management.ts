@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -20,11 +20,14 @@ export class UserManagement implements OnInit {
   Users: any[] = [];
 
   constructor(
-    private Http: HttpClient
+    private Http: HttpClient,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+
     this.LoadUsers();
+
   }
 
   LoadUsers() {
@@ -35,7 +38,9 @@ export class UserManagement implements OnInit {
 
       next: (data) => {
 
-        this.Users = data;
+        this.Users = [...data];
+
+        this.cdr.detectChanges();
 
       },
 
@@ -63,6 +68,8 @@ export class UserManagement implements OnInit {
 
         user.trangThaiHoatDong =
           !user.trangThaiHoatDong;
+
+        this.cdr.detectChanges();
 
       },
 

@@ -146,3 +146,24 @@ body{
     color:#9ca3af;
     margin-top:4px;
 }
+
+.admin-detail{
+    display:flex;
+    flex-direction:column;
+}
+
+.logout-btn{
+    margin-top:8px;
+    padding:0;
+    border:none;
+    background:transparent;
+    color:#ef4444;
+    font-size:13px;
+    cursor:pointer;
+    text-align:left;
+    font-weight:600;
+}
+
+.logout-btn:hover{
+    text-decoration:underline;
+}

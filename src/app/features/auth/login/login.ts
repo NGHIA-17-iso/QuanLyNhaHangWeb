@@ -73,7 +73,9 @@ export class LoginComponent implements OnInit {
           res.role === 'Quản lý'
         ) {
 
-          this.router.navigateByUrl('/admin/user-management');
+          this.router.navigate(
+            ['/admin/user-management']
+          );
 
         }
         else if (

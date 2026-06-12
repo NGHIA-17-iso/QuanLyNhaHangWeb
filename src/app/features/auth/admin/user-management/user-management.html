@@ -29,7 +29,7 @@
 
         </thead>
 
-        <tbody *ngIf="Users.length > 0">
+        <tbody>
 
             <tr *ngFor="let user of Users">
 
@@ -73,9 +73,9 @@
                         [class.status-active]="user.trangThaiHoatDong"
                         [class.status-lock]="!user.trangThaiHoatDong">
 
-                        {{ user.trangThaiHoatDong ?
-                        'Hoạt động' :
-                        'Đã khóa' }}
+                        {{ user.trangThaiHoatDong
+                        ? 'Hoạt động'
+                        : 'Đã khóa' }}
 
                     </span>
 
@@ -104,6 +104,16 @@
                         </button>
 
                     </div>
+
+                </td>
+
+            </tr>
+
+            <tr *ngIf="Users.length === 0">
+
+                <td colspan="6" style="text-align: center;">
+
+                    Đang tải dữ liệu...
 
                 </td>
 

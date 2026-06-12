@@ -23,19 +23,25 @@
 
             </a>
 
-            <a>
+            <a
+                routerLink="/admin/table-management"
+                routerLinkActive="active">
 
                 🍽 Quản lý bàn
 
             </a>
 
-            <a>
+            <a
+                routerLink="/admin/food-management"
+                 routerLinkActive="active">
 
                 🍜 Quản lý món ăn
 
             </a>
 
-            <a>
+            <a
+                routerLink="/admin/revenue"
+                routerLinkActive="active">
 
                 📈 Doanh thu
 
@@ -82,13 +88,21 @@
                         {{ Avatar }}
                     </div>
 
-                    <div>
+                    <div class="admin-detail">
 
                         <strong>{{ FullName }}</strong>
 
                         <div class="role">
                             {{ Role }}
                         </div>
+
+                        <button
+                            class="logout-btn"
+                            (click)="logout()">
+
+                            Đăng xuất
+
+                        </button>
 
                     </div>
 
