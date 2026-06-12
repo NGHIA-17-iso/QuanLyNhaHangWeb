@@ -31,7 +31,11 @@
 
         <tbody>
 
-            <tr *ngFor="let user of Users">
+            <tr
+                *ngFor="
+                    let user of Users;
+                    trackBy: trackByUser
+                ">
 
                 <td>
 
@@ -50,11 +54,15 @@
                 </td>
 
                 <td>
+
                     {{ user.email }}
+
                 </td>
 
                 <td>
+
                     {{ user.dienThoai }}
+
                 </td>
 
                 <td>
@@ -87,7 +95,10 @@
 
                         <button
                             class="edit-btn"
-                            [routerLink]="['/admin/edit-employee', user.maNguoiDung]">
+                            [routerLink]="[
+                                '/admin/edit-employee',
+                                user.maNguoiDung
+                            ]">
 
                             Cập nhật
 
@@ -111,7 +122,9 @@
 
             <tr *ngIf="Users.length === 0">
 
-                <td colspan="6" style="text-align: center;">
+                <td
+                    colspan="6"
+                    style="text-align: center;">
 
                     Đang tải dữ liệu...
 

@@ -1,12 +1,18 @@
 import { Routes } from '@angular/router';
+
 import { LoginComponent } from './features/auth/login/login';
+
 import { RegisterComponent } from './features/auth/register/register';
+
 import { AdminLayout } from './layouts/admin-layout/admin-layout';
 
-import { Revenue } from './features/auth/admin/user-management/revenue/revenue';
-import { Create } from './features/auth/admin/user-management/create/create';
-
 export const routes: Routes = [
+
+  {
+    path: '',
+    redirectTo: '/login',
+    pathMatch: 'full'
+  },
 
   {
     path: 'login',
@@ -24,6 +30,12 @@ export const routes: Routes = [
     children: [
 
       {
+        path: '',
+        redirectTo: 'user-management',
+        pathMatch: 'full'
+      },
+
+      {
         path: 'user-management',
         loadComponent: () =>
           import('./features/auth/admin/user-management/user-management')
@@ -32,7 +44,9 @@ export const routes: Routes = [
 
       {
         path: 'create-employee',
-        component: Create
+        loadComponent: () =>
+          import('./features/auth/admin/user-management/create/create')
+            .then(m => m.Create)
       },
 
       {
@@ -50,6 +64,20 @@ export const routes: Routes = [
       },
 
       {
+        path: 'create-table',
+        loadComponent: () =>
+          import('./features/auth/admin/user-management/table-management/create-table/create-table')
+            .then(m => m.CreateTable)
+      },
+
+      {
+        path: 'edit-table/:id',
+        loadComponent: () =>
+          import('./features/auth/admin/user-management/table-management/edit-table/edit-table')
+            .then(m => m.EditTable)
+      },
+
+      {
         path: 'food-management',
         loadComponent: () =>
           import('./features/auth/admin/user-management/food-management/food-management')
@@ -57,23 +85,27 @@ export const routes: Routes = [
       },
 
       {
-        path: 'revenue',
-        component: Revenue
+        path: 'create-food',
+        loadComponent: () =>
+          import('./features/auth/admin/user-management/food-management/create-food/create-food')
+            .then(m => m.CreateFood)
       },
 
       {
-        path: '',
-        redirectTo: 'user-management',
-        pathMatch: 'full'
+        path: 'edit-food/:id',
+        loadComponent: () =>
+          import('./features/auth/admin/user-management/food-management/edit-food/edit-food')
+            .then(m => m.EditFood)
+      },
+
+      {
+        path: 'revenue',
+        loadComponent: () =>
+          import('./features/auth/admin/user-management/revenue/revenue')
+            .then(m => m.Revenue)
       }
 
     ]
-  },
-
-  {
-    path: '',
-    redirectTo: '/login',
-    pathMatch: 'full'
   },
 
   {

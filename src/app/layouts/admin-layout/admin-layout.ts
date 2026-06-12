@@ -43,16 +43,6 @@ export class AdminLayout implements OnInit {
 
     }
 
-    if (
-      this.router.url === '/admin'
-    ) {
-
-      this.router.navigate(
-        ['/admin/user-management']
-      );
-
-    }
-
   }
 
   logout(): void {

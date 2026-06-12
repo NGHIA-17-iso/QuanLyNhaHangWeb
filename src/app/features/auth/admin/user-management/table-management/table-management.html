@@ -8,7 +8,9 @@
 
             <h2>Danh sách bàn</h2>
 
-            <p>Quản lý trạng thái và thông tin các bàn trong nhà hàng</p>
+            <p>
+                Quản lý trạng thái và thông tin các bàn trong nhà hàng
+            </p>
 
         </div>
 
@@ -21,6 +23,10 @@
         </button>
 
     </div>
+
+    <p class="total-table">
+        Tổng số bàn: {{ Tables.length }}
+    </p>
 
     <div class="table-grid">
 
@@ -36,7 +42,7 @@
 
             <h3>
 
-                {{ table.tenBan }}
+                {{ table.soBan }}
 
             </h3>
 
@@ -50,12 +56,12 @@
             <span
                 class="status"
                 [ngClass]="{
-                    'empty': table.trangThai === 'Trống',
-                    'busy': table.trangThai === 'Đang phục vụ',
-                    'reserved': table.trangThai === 'Đã đặt trước'
+                    'empty': table.trangThaiBan === 'Trống',
+                    'busy': table.trangThaiBan === 'Đang phục vụ',
+                    'reserved': table.trangThaiBan === 'Đã đặt trước'
                 }">
 
-                {{ table.trangThai }}
+                {{ table.trangThaiBan }}
 
             </span>
 

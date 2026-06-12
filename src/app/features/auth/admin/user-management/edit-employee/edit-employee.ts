@@ -1,8 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
+
 import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+
+import {
+  ActivatedRoute,
+  Router
+} from '@angular/router';
 
 @Component({
   selector: 'app-edit-employee',
@@ -22,7 +32,6 @@ export class EditEmployee implements OnInit {
     hoTen: '',
     email: '',
     dienThoai: '',
-    matKhau: '',
     maVaiTro: 2
   };
 
@@ -30,14 +39,13 @@ export class EditEmployee implements OnInit {
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
 
-    this.UserId =
-      Number(
-        this.route.snapshot.paramMap.get('id')
-      );
+    this.UserId = Number(
+      this.route.snapshot.paramMap.get('id')
+    );
 
     this.LoadUser();
 
@@ -68,6 +76,20 @@ export class EditEmployee implements OnInit {
 
   UpdateEmployee() {
 
+    if (
+      !this.User.hoTen.trim() ||
+      !this.User.email.trim() ||
+      !this.User.dienThoai.trim()
+    ) {
+
+      alert(
+        'Vui lòng nhập đầy đủ thông tin'
+      );
+
+      return;
+
+    }
+
     this.http.put(
       `https://localhost:7043/api/UserManagement/${this.UserId}`,
       this.User
@@ -78,9 +100,9 @@ export class EditEmployee implements OnInit {
 
         alert('Cập nhật thành công');
 
-        this.router.navigate([
+        this.router.navigateByUrl(
           '/admin/user-management'
-        ]);
+        );
 
       },
 

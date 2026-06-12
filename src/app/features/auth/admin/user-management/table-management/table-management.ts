@@ -1,77 +1,123 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef
+} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
+
+import { HttpClient } from '@angular/common/http';
+
+import {
+  Router,
+  RouterModule
+} from '@angular/router';
 
 @Component({
   selector: 'app-table-management',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    RouterModule
+  ],
   templateUrl: './table-management.html',
   styleUrl: './table-management.css',
 })
-export class TableManagement {
+export class TableManagement implements OnInit {
 
-  Tables = [
-    {
-      maBan: 1,
-      tenBan: 'Bàn 01',
-      sucChua: 4,
-      trangThai: 'Trống'
-    },
-    {
-      maBan: 2,
-      tenBan: 'Bàn 02',
-      sucChua: 6,
-      trangThai: 'Đang phục vụ'
-    },
-    {
-      maBan: 3,
-      tenBan: 'Bàn 03',
-      sucChua: 2,
-      trangThai: 'Đã đặt trước'
-    },
-    {
-      maBan: 4,
-      tenBan: 'Bàn 04',
-      sucChua: 8,
-      trangThai: 'Trống'
-    },
-    {
-      maBan: 5,
-      tenBan: 'Bàn 05',
-      sucChua: 4,
-      trangThai: 'Đang phục vụ'
-    },
-    {
-      maBan: 6,
-      tenBan: 'Bàn 06',
-      sucChua: 10,
-      trangThai: 'Trống'
-    }
-  ];
+  Tables: any[] = [];
 
-  AddTable() {
-    alert('Chức năng thêm bàn sẽ được phát triển sau');
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) { }
+
+  ngOnInit(): void {
+
+    this.LoadTables();
+
   }
 
-  EditTable(table: any) {
-    alert(`Cập nhật ${table.tenBan}`);
+  LoadTables(): void {
+
+    this.http.get<any[]>(
+      'https://localhost:7043/api/TableManagement'
+    )
+    .subscribe({
+
+      next: (data) => {
+
+        this.Tables = [...data];
+
+        this.cdr.detectChanges();
+
+      },
+
+      error: (err) => {
+
+        console.log(err);
+
+        alert('Không tải được danh sách bàn');
+
+      }
+
+    });
+
   }
 
-  DeleteTable(table: any) {
+  AddTable(): void {
+
+    this.router.navigateByUrl(
+      '/admin/create-table'
+    );
+
+  }
+
+  EditTable(table: any): void {
+
+    this.router.navigate([
+      '/admin/edit-table',
+      table.maBan
+    ]);
+
+  }
+
+  DeleteTable(table: any): void {
 
     const confirmDelete = confirm(
-      `Bạn có chắc muốn xóa ${table.tenBan}?`
+      `Bạn có chắc muốn xóa ${table.soBan}?`
     );
 
     if (!confirmDelete) {
+
       return;
+
     }
 
-    this.Tables = this.Tables.filter(
-      x => x.maBan !== table.maBan
-    );
+    this.http.delete(
+      `https://localhost:7043/api/TableManagement/${table.maBan}`
+    )
+    .subscribe({
+
+      next: () => {
+
+        alert('Xóa thành công');
+
+        this.LoadTables();
+
+      },
+
+      error: (err) => {
+
+        console.log(err);
+
+        alert('Không thể xóa bàn');
+
+      }
+
+    });
 
   }
 
 }
-

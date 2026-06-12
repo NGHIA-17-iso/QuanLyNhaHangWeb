@@ -1,6 +1,16 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef
+} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
+
+import { Router } from '@angular/router';
+
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-food-management',
@@ -12,60 +22,105 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './food-management.html',
   styleUrl: './food-management.css'
 })
-export class FoodManagement {
+export class FoodManagement implements OnInit {
 
   SearchText = '';
 
-  Foods = [
-    {
-      maMon: 1,
-      tenMon: 'Phở bò',
-      loaiMon: 'Món nước',
-      gia: 50000,
-      hinhAnh: '🍜',
-      trangThai: true
-    },
-    {
-      maMon: 2,
-      tenMon: 'Cơm gà',
-      loaiMon: 'Cơm',
-      gia: 45000,
-      hinhAnh: '🍛',
-      trangThai: true
-    },
-    {
-      maMon: 3,
-      tenMon: 'Bún chả',
-      loaiMon: 'Bún',
-      gia: 55000,
-      hinhAnh: '🍲',
-      trangThai: false
-    },
-    {
-      maMon: 4,
-      tenMon: 'Trà đào',
-      loaiMon: 'Nước uống',
-      gia: 30000,
-      hinhAnh: '🥤',
-      trangThai: true
-    }
-  ];
+  Foods: any[] = [];
+
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef
+  ) { }
+
+  ngOnInit(): void {
+
+    this.LoadFoods();
+
+  }
+
+  LoadFoods() {
+
+    this.http.get<any[]>(
+      'https://localhost:7043/api/FoodManagement'
+    )
+    .subscribe({
+
+      next: (data) => {
+
+        this.Foods = data.map(x => ({
+
+          maMon: x.maMonAn,
+
+          tenMon: x.tenMonAn,
+
+          loaiMon: x.danhMuc,
+
+          gia: x.gia,
+
+          hinhAnh:
+            x.hinhAnh ||
+
+            (x.danhMuc === 'Món chính'
+              ? '🍛'
+              : x.danhMuc === 'Nước uống'
+              ? '🥤'
+              : x.danhMuc === 'Tráng miệng'
+              ? '🍰'
+              : x.danhMuc === 'Thức ăn nhanh'
+              ? '🍟'
+              : '🍽'),
+
+          trangThai: x.conBan
+
+        }));
+
+        this.cdr.detectChanges();
+
+      },
+
+      error: (err) => {
+
+        console.error(err);
+
+        alert(
+          'Không tải được danh sách món ăn'
+        );
+
+      }
+
+    });
+
+  }
 
   get FilteredFoods() {
 
     return this.Foods.filter(food =>
-      food.tenMon.toLowerCase()
-        .includes(this.SearchText.toLowerCase())
+      food.tenMon
+        .toLowerCase()
+        .includes(
+          this.SearchText.toLowerCase()
+        )
     );
 
   }
 
   AddFood() {
-    alert('Chức năng thêm món sẽ được phát triển sau');
+
+    this.router.navigate([
+      '/admin/create-food'
+    ]);
+
   }
 
   EditFood(food: any) {
-    alert(`Cập nhật ${food.tenMon}`);
+
+    this.router.navigate([
+      '/admin/edit-food',
+      food.maMon
+    ]);
+
   }
 
   DeleteFood(food: any) {
@@ -75,12 +130,33 @@ export class FoodManagement {
     );
 
     if (!confirmDelete) {
+
       return;
+
     }
 
-    this.Foods = this.Foods.filter(
-      x => x.maMon !== food.maMon
-    );
+    this.http.delete(
+      `https://localhost:7043/api/FoodManagement/${food.maMon}`
+    )
+    .subscribe({
+
+      next: () => {
+
+        alert('Xóa thành công');
+
+        this.LoadFoods();
+
+      },
+
+      error: (err) => {
+
+        console.error(err);
+
+        alert('Xóa thất bại');
+
+      }
+
+    });
 
   }
 

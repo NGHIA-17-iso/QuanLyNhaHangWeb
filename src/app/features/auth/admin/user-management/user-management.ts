@@ -1,7 +1,15 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef
+} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
+
 import { HttpClient } from '@angular/common/http';
+
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -56,18 +64,42 @@ export class UserManagement implements OnInit {
 
   ToggleStatus(user: any) {
 
+    const newStatus =
+      !user.trangThaiHoatDong;
+
     this.Http.put(
       `https://localhost:7043/api/UserManagement/${user.maNguoiDung}/status`,
       {
-        trangThaiHoatDong: !user.trangThaiHoatDong
+        trangThaiHoatDong: newStatus
       }
     )
     .subscribe({
 
       next: () => {
 
-        user.trangThaiHoatDong =
-          !user.trangThaiHoatDong;
+        const index =
+          this.Users.findIndex(
+            x =>
+              x.maNguoiDung ===
+              user.maNguoiDung
+          );
+
+        if (index !== -1) {
+
+          this.Users[index] = {
+
+            ...this.Users[index],
+
+            trangThaiHoatDong:
+              newStatus
+
+          };
+
+          this.Users = [
+            ...this.Users
+          ];
+
+        }
 
         this.cdr.detectChanges();
 
@@ -77,11 +109,22 @@ export class UserManagement implements OnInit {
 
         console.log(err);
 
-        alert('Không thể cập nhật trạng thái');
+        alert(
+          'Không thể cập nhật trạng thái'
+        );
 
       }
 
     });
+
+  }
+
+  trackByUser(
+    index: number,
+    user: any
+  ): number {
+
+    return user.maNguoiDung;
 
   }
 

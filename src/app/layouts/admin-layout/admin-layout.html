@@ -1,6 +1,5 @@
 <div class="layout">
 
-    <!-- Sidebar -->
     <aside class="sidebar">
 
         <div class="logo">
@@ -16,32 +15,36 @@
         <nav>
 
             <a
-                routerLink="/admin/user-management"
-                routerLinkActive="active">
+                [routerLink]="['/admin/user-management']"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }">
 
                 👥 Quản lý nhân viên
 
             </a>
 
             <a
-                routerLink="/admin/table-management"
-                routerLinkActive="active">
+                [routerLink]="['/admin/table-management']"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }">
 
                 🍽 Quản lý bàn
 
             </a>
 
             <a
-                routerLink="/admin/food-management"
-                 routerLinkActive="active">
+                [routerLink]="['/admin/food-management']"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }">
 
                 🍜 Quản lý món ăn
 
             </a>
 
             <a
-                routerLink="/admin/revenue"
-                routerLinkActive="active">
+                [routerLink]="['/admin/revenue']"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }">
 
                 📈 Doanh thu
 
@@ -51,8 +54,6 @@
 
     </aside>
 
-
-    <!-- Nội dung -->
     <main class="content">
 
         <div class="topbar">
@@ -61,12 +62,11 @@
 
                 <small>NHÂN SỰ F-CLOUD</small>
 
-                <h1>Danh sách nhân viên</h1>
+                <h1>Hệ thống quản lý nhà hàng</h1>
 
-                <p>Tối ưu hóa quy trình quản lý nhân viên</p>
+                <p>Quản lý nhân viên và hoạt động kinh doanh</p>
 
             </div>
-
 
             <div class="topbar-right">
 
@@ -76,7 +76,7 @@
 
                 <button
                     class="add-btn"
-                    routerLink="/admin/create-employee">
+                    [routerLink]="['/admin/create-employee']">
 
                     👥 + Thêm nhân viên
 
@@ -85,15 +85,23 @@
                 <div class="admin-info">
 
                     <div class="avatar">
+
                         {{ Avatar }}
+
                     </div>
 
                     <div class="admin-detail">
 
-                        <strong>{{ FullName }}</strong>
+                        <strong>
+
+                            {{ FullName }}
+
+                        </strong>
 
                         <div class="role">
+
                             {{ Role }}
+
                         </div>
 
                         <button
